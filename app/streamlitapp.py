@@ -34,6 +34,7 @@ if options:
 
         # Rendering inside of the app
         video = open('test_video.mp4', 'rb')
+        # video = open('input.mp4', 'rb')
         video_bytes = video.read()
         st.video(video_bytes)
 
