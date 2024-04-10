@@ -1,6 +1,8 @@
 import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv3D, LSTM, Dense, Dropout, Bidirectional, MaxPool3D, Activation, Reshape, SpatialDropout3D, BatchNormalization, TimeDistributed, Flatten
+from keras.layers import LSTM, Bidirectional
+from keras.initializers import Orthogonal
 
 def load_model() -> Sequential:
     model = Sequential()
@@ -19,10 +21,12 @@ def load_model() -> Sequential:
 
     model.add(TimeDistributed(Flatten()))
 
-    model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
     model.add(Dropout(.5))
 
-    model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
     model.add(Dropout(.5))
 
     model.add(Dense(41, kernel_initializer='he_normal', activation='softmax'))
