@@ -1,10 +1,10 @@
 import os
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv3D, LSTM, Dense, Dropout, Bidirectional, MaxPool3D, Activation, Reshape, SpatialDropout3D, BatchNormalization, TimeDistributed, Flatten
-# from keras.layers import Conv3D, LSTM, Dense, Dropout, Bidirectional, MaxPool3D, Activation, Reshape, SpatialDropout3D, BatchNormalization, TimeDistributed, Flatten
-# from keras.models import Sequential
-# from keras.layers import LSTM, Bidirectional
-# from keras.initializers import Orthogonal
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import Conv3D, LSTM, Dense, Dropout, Bidirectional, MaxPool3D, Activation, Reshape, SpatialDropout3D, BatchNormalization, TimeDistributed, Flatten
+from keras.layers import Conv3D, LSTM, Dense, Dropout, Bidirectional, MaxPool3D, Activation, Reshape, SpatialDropout3D, BatchNormalization, TimeDistributed, Flatten
+from keras.models import Sequential
+from keras.layers import LSTM, Bidirectional
+from keras.initializers import Orthogonal
 import tensorflow as tf
 
 def load_model() -> Sequential:
@@ -24,29 +24,29 @@ def load_model() -> Sequential:
 
     model.add(TimeDistributed(Flatten()))
 
-    model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
-    # model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
     model.add(Dropout(.5))
 
-    model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
-    # model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
+    # model.add(Bidirectional(LSTM(128, kernel_initializer='Orthogonal', return_sequences=True)))
+    model.add(Bidirectional(LSTM(128, kernel_initializer=Orthogonal(), return_sequences=True)))
     model.add(Dropout(.5))
 
     model.add(Dense(41, kernel_initializer='he_normal', activation='softmax'))
 
-    model.load_weights(os.path.join('..','models','checkpoint'))
+    # model.load_weights(os.path.join('..','models','checkpoint'))
 
-    # # Ensure the checkpoint directory is correctly set relative to the script's execution directory
-    # checkpoint_dir = os.path.join('..', 'models')
+    # Ensure the checkpoint directory is correctly set relative to the script's execution directory
+    checkpoint_dir = os.path.join('..', 'models')
 
-    # # Create a checkpoint instance that points to the folder where the checkpoints are saved
-    # checkpoint = tf.train.Checkpoint(model=model)
+    # Create a checkpoint instance that points to the folder where the checkpoints are saved
+    checkpoint = tf.train.Checkpoint(model=model)
 
-    # # Restore the latest checkpoint
-    # latest = tf.train.latest_checkpoint(checkpoint_dir)
-    # if latest:
-    #     checkpoint.restore(latest)
-    # else:
-    #     raise FileNotFoundError(f"No checkpoint found in {checkpoint_dir}")
+    # Restore the latest checkpoint
+    latest = tf.train.latest_checkpoint(checkpoint_dir)
+    if latest:
+        checkpoint.restore(latest)
+    else:
+        raise FileNotFoundError(f"No checkpoint found in {checkpoint_dir}")
 
     return model
