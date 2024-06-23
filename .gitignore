@@ -1,0 +1,7 @@
+# LipNet
+data/
+models/
+results/
+__pycache__/
+.vscode/
+*.zip
